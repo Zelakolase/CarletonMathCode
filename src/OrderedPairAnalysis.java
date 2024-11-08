@@ -6,6 +6,8 @@ import java.util.Scanner;
  * ... find all equivalence classes.
  */
 public class OrderedPairAnalysis {
+    public static ArrayList<Pair<Long>> Set = new ArrayList<>(); // Set of ordered pairs
+    public static ArrayList<Long> uniqueElements = new ArrayList<>(); // Set of unique elements
     /**
      * Spawn point
      * @param args Useless
