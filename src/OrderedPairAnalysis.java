@@ -12,6 +12,8 @@ public class OrderedPairAnalysis {
      */
     public static void main(String[] args) {
         Scanner S = new Scanner(System.in);
+        ArrayList<Pair<Long>> Set = new ArrayList<>(); // Set of ordered pairs
+        ArrayList<Long> uniqueElements = new ArrayList<>(); // Set of unique elements
         try {
             
         }catch(Exception e) {
