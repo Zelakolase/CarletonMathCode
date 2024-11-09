@@ -21,7 +21,9 @@ public class Pair<T> {
      * @param in The pair to be compared to
      * @return Whether the first and second elements of the first pair equal the first and second elements of the second pair, respectively.
      */
-    public boolean equals(Pair<T> in) {
-        return in.first.equals(first) && in.second.equals(second);
+    @SuppressWarnings("unchecked") // Ignore Unckecked casts (unrecommended)
+    @Override
+    public boolean equals(Object in) {
+        return ((Pair<T>)in).first.equals(first) && ((Pair<T>)in).second.equals(second);
     }
 }
