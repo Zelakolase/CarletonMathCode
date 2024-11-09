@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -12,7 +13,8 @@ import lib.Pair;
  */
 public class OrderedPairAnalysis {
     public static ArrayList<Pair<Long>> Set = new ArrayList<>(); // Set of ordered pairs
-    public static ArrayList<Long> uniqueElements = new ArrayList<>(); // Set of unique elements
+    // a --> b,c and b --> c for a,b a,c b,c (example)
+    public static HashMap<Long, ArrayList<Long>> uniqueElements = new HashMap<>(); // Hashmap of unique elements
     /**
      * Spawn point
      * @param args Useless
@@ -33,6 +35,13 @@ public class OrderedPairAnalysis {
             // Is the set symmetric?
             boolean isSymmetric = isSymmetric();
             System.out.println("Is the set symmetric? " + (isSymmetric? "Yes!" : "No:("));
+            
+            // Is the set transitive?
+            boolean isTransitive = isTransitive();
+            System.out.println("Is the set transitive? " + (isTransitive? "Yes!" : "No:("));
+
+            // Does this set resemble an equivalence relation?
+            System.out.println("Does this set resemble an equivalence relation? " + (isReflexive && isSymmetric && isTransitive ? "Yuppy!" : "Nah"));
         }catch(Exception e) {
             e.printStackTrace(); // Just throw the exception
         }finally {
@@ -56,8 +65,9 @@ public class OrderedPairAnalysis {
             long first = Long.parseLong(matcher.group(1));
             long second = Long.parseLong(matcher.group(2));
             Set.add(new Pair<Long>(first, second));
-            if(! uniqueElements.contains(first)) uniqueElements.add(first);
-            if(! uniqueElements.contains(second)) uniqueElements.add(second);
+            if(! uniqueElements.keySet().contains(first)) uniqueElements.put(first, new ArrayList<>());
+            if(! uniqueElements.keySet().contains(second)) uniqueElements.put(second, new ArrayList<>());
+            uniqueElements.get(first).add(second);
         }
     }
 
@@ -69,7 +79,7 @@ public class OrderedPairAnalysis {
         boolean isReflexive = false;
 
         // Create a copy of uniqueElements. That is a trade-off in favor of CP since Memory is abundant
-        ArrayList<Long> tempUniqueElements = new ArrayList<>(uniqueElements);
+        ArrayList<Long> tempUniqueElements = new ArrayList<>(uniqueElements.keySet());
 
         // This way, we can pass on the Set of ordered pairs only once.
         for(Pair<Long> P : Set) {
@@ -104,5 +114,22 @@ public class OrderedPairAnalysis {
         }
 
         return isSymmetric;
+    }
+    
+    /**
+     * Checks if this implication holds: (a,b) in Set, and (b,c) in Set, implies (a,c) are in Set
+     * @return Whether the set is transitive or not
+     */
+    public static boolean isTransitive() {
+        boolean isTransitive = true;
+
+        // A,B ^ B,C --> A,C
+        for(Long A : uniqueElements.keySet()) {
+            for(long B : uniqueElements.get(A)) {
+                if(uniqueElements.containsKey(B)) isTransitive &= (new ArrayList<>(uniqueElements.get(A))).retainAll(uniqueElements.get(B)) || uniqueElements.get(A).equals(uniqueElements.get(B));
+            }
+        }
+
+        return isTransitive;
     }
 }
