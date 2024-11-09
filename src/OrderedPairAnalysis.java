@@ -82,6 +82,10 @@ public class OrderedPairAnalysis {
         return isReflexive;
     }
 
+    /**
+     * For each (a,b) in Set, check if there exists (b,a) in Set
+     * @return Whether the set is symmetric or not
+     */
     public static boolean isSymmetric() {
         boolean isSymmetric = true;
 
