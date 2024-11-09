@@ -27,7 +27,12 @@ public class OrderedPairAnalysis {
             rawStringToSet(rawUserInput); // Converts the raw input to the set
             
             // Is the set reflexive?
-            System.out.println("Is the set reflexive? " + (isReflexive()? "Yes!" : "No:("));
+            boolean isReflexive = isReflexive();
+            System.out.println("Is the set reflexive? " + (isReflexive? "Yes!" : "No:("));
+
+            // Is the set symmetric?
+            boolean isSymmetric = false;
+            System.out.println("Is the set symmetric? " + (isSymmetric? "Yes!" : "No:("));
         }catch(Exception e) {
             e.printStackTrace(); // Just throw the exception
         }finally {
@@ -35,6 +40,10 @@ public class OrderedPairAnalysis {
         }
     }
 
+    /**
+     * Uses generalized regex format to convert user input to actual data structure
+     * @param in The user input from the terminal
+     */
     public static void rawStringToSet(String in) {
         /* WARNING: THE FOLLOWING FUNCTION DIRECTLY MODIFIES Set AND uniqueElements. THIS IS NOT RECOMMENDED IN GENERAL. */
         // Regex pattern to capture various formats of pairs
