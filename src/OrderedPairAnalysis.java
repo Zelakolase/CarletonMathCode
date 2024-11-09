@@ -25,6 +25,9 @@ public class OrderedPairAnalysis {
             String rawUserInput = S.nextLine();
             /* WARNING: THE FOLLOWING LINE DIRECTLY MODIFIES Set AND uniqueElements. THIS IS NOT RECOMMENDED IN GENERAL. */
             rawStringToSet(rawUserInput); // Converts the raw input to the set
+            
+            // Is the set reflexive?
+            System.out.println("Is the set reflexive? " + (isReflexive()? "Yes!" : "No:("));
         }catch(Exception e) {
             e.printStackTrace(); // Just throw the exception
         }finally {
@@ -49,8 +52,23 @@ public class OrderedPairAnalysis {
         }
     }
 
-    public static boolean isReflexive(ArrayList<Pair<Long>> Set) {
+    /**
+     * Check if each x belongs to an arbitrary pair in Set has the pair (x,x) in Set
+     * @return Whether the set is reflexive or not
+     */
+    public static boolean isReflexive() {
         boolean isReflexive = false;
+
+        // Create a copy of uniqueElements. That is a trade-off in favor of CP since Memory is abundant
+        ArrayList<Long> tempUniqueElements = new ArrayList<>(uniqueElements);
+
+        // This way, we can pass on the Set of ordered pairs only once.
+        for(Pair<Long> P : Set) {
+            if(P.first.equals(P.second)) tempUniqueElements.remove(P.first);
+        }
+
+        // If all unique elements were identified and removed, the set is reflexive.
+        if(tempUniqueElements.isEmpty()) isReflexive = true;
 
         return isReflexive;
     }
