@@ -31,7 +31,7 @@ public class OrderedPairAnalysis {
             System.out.println("Is the set reflexive? " + (isReflexive? "Yes!" : "No:("));
 
             // Is the set symmetric?
-            boolean isSymmetric = false;
+            boolean isSymmetric = isSymmetric();
             System.out.println("Is the set symmetric? " + (isSymmetric? "Yes!" : "No:("));
         }catch(Exception e) {
             e.printStackTrace(); // Just throw the exception
@@ -80,5 +80,25 @@ public class OrderedPairAnalysis {
         if(tempUniqueElements.isEmpty()) isReflexive = true;
 
         return isReflexive;
+    }
+
+    public static boolean isSymmetric() {
+        boolean isSymmetric = true;
+
+        // Create a copy of Set. That is a trade-off in favor of CP since Memory is abundant
+        ArrayList<Pair<Long>> tempSet = new ArrayList<>(Set);
+
+        // Get the first pair, find the inverse, check if it exists, then delete both.
+        // Stop when you exhaust the entire set (Time to run < O(size(Set)))
+        while (!tempSet.isEmpty()) {
+            Pair<Long> P = tempSet.getFirst();
+            Pair<Long> inverse = new Pair<Long>(P.second, P.first);
+            // We AND the variable. If it's false once, will remain false
+            isSymmetric &= tempSet.contains(inverse);
+            tempSet.remove(inverse);
+            tempSet.remove(P);
+        }
+
+        return isSymmetric;
     }
 }
